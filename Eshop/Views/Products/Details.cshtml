@@ -1,0 +1,210 @@
+﻿@model Eshop.Models.Product
+
+@{
+    ViewData["Title"] = "Product Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">Single Product</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <ul class="breadcrumb-nav">
+                    <li><a asp-action="Index" asp-controller="Home"><i class="lni lni-home"></i> Home</a></li>
+                    <li><a asp-action="Index" asp-controller="Products">Shop</a></li>
+                    <li>Product Details</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Start Item Details -->
+<section class="item-details section">
+    <div class="container">
+        <div class="top-area">
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <div class="product-images">
+                        <main id="gallery">
+                            <div id="product-main-img" class="main-img">
+                                <img src="~/images/products/@Model.Image" id="current" alt="#" >
+                            </div>
+                            <div class="images">
+                                <div class="product-preview">
+                                    <img class="img" src="~/images/products/@Model.Image" alt="#">
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-12">
+                    <div class="product-info">
+                        <h2 class="title">@Model.Name</h2>
+                        <p class="category">
+                            <i class="lni lni-tag"></i> Categories:
+                            <a href="javascript:void(0)">@Model.ProductType.Name</a>
+                            @if (Model.Status && Model.Stock > 0)
+                            {
+                                <span style="margin-left: 10px">(@Model.Stock <span> left in stock)</span></span>
+                            }
+                            else
+                            {
+                                <span style="margin-left: 10px">(Out Stock)</span>
+                            }
+                        </p>
+                        <h3 class="price">@Model.Price.ToString("#,##0") VNĐ</h3>
+                        <p class="info-text">@Model.Description</p>
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-12">
+                                <div class="form-group input-number">
+                                    <label for="color">Quantity(MAX=20)</label>
+                                    @*<input id="txtsoluong" name="txtsoluong" type="number" value="1" min="1" max="20" oninput="validity.valid||(value='1');">*@
+
+                                    <input id="txtsoluong" name="txtsoluong" type="number" value="1">
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @*//*@
+                        @*<div class="add-to-cart">
+                            <div class="qty-label">
+                                Qty
+                                <div class="input-number">
+                                    <input id="txtsoluong" name="txtsoluong" type="number" value="1">
+                                    <span class="qty-up">+</span>
+                                    <span class="qty-down">-</span>
+                                </div>
+                            </div>
+                            <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                            <input type="hidden" asp-for="Id" />
+                        </div>*@
+                        @*\\*@
+
+
+
+                        <div class="bottom-content">
+                            <div class="row align-items-end">
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="button cart-button">
+                                        <button class="btn add-to-cart-btn" style="width: 100%;">Add to Cart</button>
+                                        <input type="hidden" asp-for="Id" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        @*description lorem...*@
+        <div class="product-details-info">
+            <div class="single-block">
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <div class="info-body custom-responsive-margin">
+                            <h4>Details</h4>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                                irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.
+                            </p>
+                            <h4>Features</h4>
+                            <ul class="features">
+                                <li>Capture 4K30 Video and 12MP Photos</li>
+                                <li>Game-Style Controller with Touchscreen</li>
+                                <li>View Live Camera Feed</li>
+                                <li>Full Control of HERO6 Black</li>
+                                <li>Use App for Dedicated Camera Operation</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="info-body">
+                            <h4>Specifications</h4>
+                            <ul class="normal-list">
+                                <li><span>Weight:</span> 35.5oz (1006g)</li>
+                                <li><span>Maximum Speed:</span> 35 mph (15 m/s)</li>
+                                <li><span>Maximum Distance:</span> Up to 9,840ft (3,000m)</li>
+                                <li><span>Operating Frequency:</span> 2.4GHz</li>
+                                <li><span>Manufacturer:</span> GoPro, USA</li>
+                            </ul>
+                            <h4>Shipping Options:</h4>
+                            <ul class="normal-list">
+                                <li><span>Courier:</span> 2 - 4 days, $22.50</li>
+                                <li><span>Local Shipping:</span> up to one week, $10.00</li>
+                                <li><span>UPS Ground Shipping:</span> 4 - 6 days, $18.00</li>
+                                <li><span>Unishop Global Export:</span> 3 - 4 days, $25.00</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- End Item Details -->
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart-btn").click(function () {
+                    var productID = $('#Id').val();
+                    var qty1 = $('#txtsoluong').val();
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productId: productID,
+                            qty: qty1
+                        },
+                        success: function (response) {
+                            loadHeaderCart();
+                            location.reload();
+                        },
+                        error: function (error) {
+                            alert("Lỗi khi post data: " + error.responseText);
+                        }
+                    });
+                });
+            });
+
+            $(".delete").click(function () {
+                var productID = $(this).attr("data-mahh");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productId: productID,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function (rs) {
+                        alert("Lỗi khi Xóa !!!");
+                    }
+                });
+            });
+
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart")
+                $("#miniCart").load("/AjaxContent/NumberCart")
+            }
+        });
+    </script>
+}

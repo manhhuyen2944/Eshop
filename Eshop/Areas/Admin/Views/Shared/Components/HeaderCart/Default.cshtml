@@ -1,0 +1,84 @@
+﻿@*@model List<Eshop.Models.Cart>*@
+    @model IEnumerable<Eshop.Models.Cart>
+
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="shopping-item">
+        <div class="dropdown-cart-header">
+            <span>@Model.Sum(x => x.Quantity).ToString() Item(s) selected</span>
+            <a asp-action="Index" asp-controller="Carts">View Cart</a>
+        </div>
+        <ul class="shopping-list">
+            @foreach (var item in Model)
+            {
+                <li id="miniCart">
+                    <a class="remove delete" data-mahh="@item.Product.Id" data-dongia="@item.Product.Price" title="Remove this item"><i class="lni lni-close"></i></a>
+                    <div class="cart-img-head">
+                        <a class="cart-img" asp-action="Details" asp-controller="Products" asp-route-id="@item.Product.Id">
+                            <img src="~/images/products/@item.Product.Image" style="width: 100px; height: 100px">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <h4><a asp-action="Details" asp-controller="Products" asp-route-id="@item.Product.Id">@item.Product.Name</a></h4>
+                        <p class="quantity qty">--- x @item.Quantity --- <span>@((item.Product.Price * item.Quantity).ToString("#,##0")) VNĐ</span></p>
+                    </div>
+                </li>
+            }
+        </ul>
+        <div class="bottom">
+            <div class="total">
+                <span>Total</span>
+                <span class="total-amount">@Model.Sum(x => x.Product.Price * x.Quantity).ToString("#,##0") VNĐ</span>
+            </div>
+            <div class="button">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-action="Index" asp-controller="Checkouts" class="btn animate">Checkout</a>
+                }
+                else
+                {
+                    <a asp-action="Login" asp-controller="Accounts" class="btn animate">Checkout</a>
+                }
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="shopping-item">
+        <div class="dropdown-cart-header">
+            <span>0 Item(s) selected</span>
+            <a asp-action="Index" asp-controller="Carts">View Cart</a>
+        </div>
+        <ul class="shopping-list">
+            <li>
+                <div class="cart-img-head">
+                    <a class="cart-img" href="#">
+                        <img src="~/images/empty.jpg" alt="#">
+                    </a>
+                </div>
+
+                <div class="content">
+                    <h4 style="margin-top: 20px">Rỗng!</h4>
+                </div>
+            </li>
+        </ul>
+        <div class="bottom">
+            <div class="total">
+                <span>Total</span>
+            </div>
+            <div class="button">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <a asp-action="Index" asp-controller="Products" class="btn animate" onclick="alert('Giỏ hàng trống! Vui lòng chọn sản phẩm')" value="Checkout">Checkout</a>
+                }
+                else
+                {
+                    <a asp-action="Login" asp-controller="Accounts" class="btn animate">Checkout</a>
+                }
+            </div>
+        </div>
+    </div>
+}

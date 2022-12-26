@@ -1,0 +1,145 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model IPagedList<Eshop.Models.Account>
+@{
+    int _current = ViewBag.CurrentPage;
+    int _next = _current + 1;
+    ViewData["Title"] = "Quản lý tài khoản - Trang " + _current;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Quản lý tài khoản</h1>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+
+                            <form asp-controller="Accounts" asp-action="Index">
+                                <label class="col-md-6">
+                                    <input type="search" name="searchStr" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Tên, Emai, SĐT, Địa chỉ" aria-controls="dataTable" required />
+                                </label>
+                            </form>
+                            <hr />
+
+                            <a asp-area="Admin" asp-controller="Accounts" asp-action="Create" class="btn btn-primary">
+                                <i class="fas fa-plus"></i>
+                                <span>Thêm tài khoản</span>
+                            </a>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered dataTable" id="dataTable" width="100%"
+                                   cellspacing="0" role="grid" aria-describedby="dataTable_info"
+                                   style="width: 100%;">
+
+                                <thead>
+                                    <tr role="row">
+                                        <th>Image</th>
+                                        <th>
+                                            <a asp-action="Index" asp-route-sortOrder="@ViewData["IdSortParm"]">Id</a>
+                                        </th>
+                                        <th>FullName</th>
+                                        <th>Admin?</th>
+                                        <th>Email</th>
+                                        <th>SĐT</th>
+                                        <th>Địa chỉ</th>
+                                        <th>Trạng thái</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+
+                                <tbody>
+                                    @if (Model != null)
+                                    {
+                                        foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <img src="~/images/user/@item.Avatar" style="width: 100px; height: 100px" alt="">
+                                                </td>
+                                                <td class="sorting_1">@item.Id</td>
+                                                <td>@item.FullName</td>
+                                                <td>
+                                                    @if (item.IsAdmin)
+                                                    {
+                                                        <span class="badge badge-lg badge-warning" style="padding: 10px">Admin</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge badge-lg badge-primary" style="padding: 10px">Khách</span>
+                                                    }
+                                                </td>
+                                                <td>@item.Email</td>
+                                                <td>@item.Phone</td>
+                                                <td>@item.Address</td>
+                                                <td>
+                                                    @if (item.Status)
+                                                    {
+                                                        <span class="badge badge-lg badge-success" style="padding: 10px">Hoạt động</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge badge-lg badge-danger" style="padding: 10px">Khoá</span>
+                                                    }
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a asp-area="Admin" asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">
+                                                        <i class="fas fa-info"></i>Xem
+                                                    </a>
+                                                    <a asp-area="Admin" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-danger">
+                                                        <i class="fas fa-edit"></i>Sửa
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="pagination left">
+                                    @Html.PagedListPager(Model, page => Url.Action("index", new {page = page}), new PagedListRenderOptions()
+                                    {
+                                    ActiveLiElementClass = "active",
+                                    PageClasses = new[]{ "page-link"},
+                                    LiElementClasses=new[] { "page-item" },
+                                    UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
+                                    LinkToNextPageFormat = "Next",
+                                    LinkToPreviousPageFormat = "Previous",
+                                    MaximumPageNumbersToDisplay = 3,
+                                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                    DisplayLinkToNextPage = PagedListDisplayMode.Always
+                                    })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

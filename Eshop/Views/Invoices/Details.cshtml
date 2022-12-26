@@ -1,0 +1,99 @@
+﻿@model Eshop.ViewModel.InvoiceViewModel
+@{
+    ViewData["Title"] = "Invoice Detail #" + Model.Invoices.Id;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">Chi tiết đơn hàng</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <ul class="breadcrumb-nav">
+                    <li><a asp-action="Index" asp-controller="Home"><i class="lni lni-home"></i> Home</a></li>
+                    <li><a asp-action="MyAccount" asp-controller="Accounts">My Account</a></li>
+                    <li>Invoice Details</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="shopping-cart section">
+    <div class="container">
+
+        <h4 class="font-weight-semibold text-dark">Invoice No : <span style="color: red">#@Model.Invoices.Id</span></h4>
+
+        <h4 class="font-weight-semibold text-dark">Date : <span style="color: red">@Model.Invoices.IssuedDate</span></h4>
+
+        <hr />
+
+        <div class="cart-list-head">
+            <div class="cart-list-title">
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-12">
+                        <p>NO.</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <p>Sản phẩm</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12">
+                        <p>Số lượng</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-12">
+                        <p>Đơn giá</p>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-12">
+                        <p>Tổng tiền</p>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model != null)
+            {
+                for (int i = 0; i < Model.InvoiceDetails.Count; i++)
+                {
+                    <div class="cart-single-list">
+                        <div class="row align-items-center">
+                            <div class="col-lg-1 col-md-1 col-12">
+                                <p>@(i + 1)</p>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-12">
+                                <p>@Model.InvoiceDetails[i].Product.Name</p>
+                            </div>
+                            <div class="col-lg-1 col-md-1 col-12">
+                                <p>@Model.InvoiceDetails[i].Quantity</p>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-12">
+                                <p>@Model.InvoiceDetails[i].UnitPrice.ToString("#,##0") VNĐ</p>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-12">
+                                <p>@((Model.InvoiceDetails[i].Quantity * Model.InvoiceDetails[i].UnitPrice).ToString("#,##0")) VNĐ</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <hr />
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <a asp-action="MyAccount" asp-controller="Accounts" class="btn btn-block btn-outline-danger col-md-3"><i class="fas fa-arrow-left" style="margin-right:10px;"></i>Quay lại</a>
+            </div>
+            <div class="float-right text-right col-md-3">
+                <h4><span class="font-weight-semibold text-dark">Total :</span> @Model.Invoices.Total.ToString("#,##0") VNĐ</h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

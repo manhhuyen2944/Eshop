@@ -1,0 +1,218 @@
+﻿@model List<Eshop.Models.Cart>
+
+@{
+    ViewData["Title"] = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">Cart</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <ul class="breadcrumb-nav">
+                    <li><a asp-action="Index" asp-controller="Home"><i class="lni lni-home"></i> Home</a></li>
+                    <li><a asp-action="Index" asp-controller="Products">Shop</a></li>
+                    <li>Cart</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="shopping-cart section">
+    <div class="container">
+        <div class="cart-list-head">
+
+            <div class="cart-list-title">
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-12">
+                    </div>
+                    <div class="col-lg-4 col-md-3 col-12">
+                        <p>Product Name</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <p>Price</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <p>Quantity(MAX=20)</p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <p>Subtotal</p>
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-12">
+                        <p>Remove</p>
+                    </div>
+                </div>
+            </div>
+
+            @if (Model != null && Model.Count() > 0)
+            {
+                @foreach (var item in Model)
+                {
+                    <div class="cart-single-list">
+                        <div class="row align-items-center">
+                            <div class="col-lg-1 col-md-1 col-12">
+                                <a><img src="~/images/products/@item.Product.Image" alt="#" style="width: 100px" ; height="100px"></a>
+                            </div>
+
+                            <div class="col-lg-4 col-md-3 col-12">
+                                <h5 class="product-name"><a asp-action="Details" asp-controller="Products" asp-route-id="@item.Product.Id">@item.Product.Name</a></h5>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-12">
+                                <p class="amount">@item.Product.Price.ToString("#,##0") VNĐ</p>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-12">
+                                <div class="count-input cart-plus-minus">
+                                    <input class="cart-plus-minus-box" value="@item.Quantity" type="number" data-mahh="@item.Product.Id" min="1" max="20" oninput="validity.valid||(value='1');">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-2 col-md-2 col-12">
+                                <p class="amount">@((item.Product.Price * item.Quantity).ToString("#,##0")) VNĐ</p>
+                            </div>
+
+                            <div class="col-lg-1 col-md-2 col-12">
+                                <a class="remove-item removecart" data-mahh="@item.Product.Id"><i class="lni lni-close" style="margin-top: 10px"></i></a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+            }
+        </div>
+
+
+        <div class="row">
+            <div class="col-12">
+
+                <div class="total-amount">
+                    <div class="row">
+
+                        <div class="col-lg-8 col-md-6 col-12">
+                            <div class="left">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-12">
+                            <div class="right">
+                                <a asp-action="RemoveAll" class="btn btn-outline-danger float-md-right">RemoveCart</a>
+                                <hr />
+                                <ul>
+                                    @if (Model != null && Model.Count() > 0)
+                                    {
+                                        <li>Cart Subtotal<span>@Model.Sum(x => x.Product.Price * x.Quantity).ToString("#,##0") VNĐ</span></li>
+                                    }
+                                    else
+                                    {
+                                        <li>Cart Subtotal<span>0 VNĐ</span></li>
+                                    }
+                                </ul>
+                                <div class="button">
+                                    @if (User.Identity.IsAuthenticated)
+                                    {
+                                        if (Model != null && Model.Count() > 0)
+                                        {
+                                            <a asp-action="Index" asp-controller="Checkouts" class="btn">Checkout</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-action="Index" asp-controller="Products" class="btn animate" onclick="alert('Giỏ hàng trống! Vui lòng chọn sản phẩm')" value="Checkout">Checkout</a>
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Login" asp-controller="Accounts" class="btn">Checkout</a>
+                                    }
+                                    <a asp-action="Index" asp-controller="Products" class="btn btn-alt">Continue shopping</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+    <script>
+        $(function () {
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart")
+                $("#miniCart").load("/AjaxContent/NumberCart")
+            }
+
+            $(".cart-plus-minus-box").click(function () {
+                var productID = $(this).attr("data-mahh");
+                console.log(productID);
+                var qty1 = parseInt($(this).val());
+                console.log(productID);
+                $.ajax({
+                    url: "api/cart/update",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productId: productID,
+                        qty: qty1
+                    },
+                    success: function (result) {
+                        window.location = 'Carts';
+                    },
+                    error: function (rs) {
+                        alert("Lỗi cập nhật !!!");
+                    }
+                });
+            });
+
+
+            $(".removecart").click(function () {
+                var productID = $(this).attr("data-mahh");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productId: productID,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function (rs) {
+                        alert("Lỗi khi Xóa !!!");
+                    }
+                });
+            });
+
+            $(".removeall").click(function () {
+                var productID = $(this).attr("data-mahh");
+                $.ajax({
+                    url: "api/cart/removeall",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productId: productID,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function (rs) {
+                        alert("Lỗi khi Xóa !!!");
+                    }
+                });
+            });
+        });
+    </script>
+}

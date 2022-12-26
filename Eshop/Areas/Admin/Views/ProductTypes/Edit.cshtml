@@ -1,0 +1,43 @@
+﻿@model Eshop.Models.ProductType
+
+@{
+    ViewData["Title"] = "Edit LSP #" + Model.Id;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row-cols-lg-2" style="margin: 20px;">
+    <form asp-controller="ProductTypes" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="form-group form-check">
+            @if (Model.Status)
+            {
+                <div class="switch m-r-10">
+                    <input type="checkbox" asp-for="Status" checked="" />
+                    <label for="Status"></label>
+                </div>
+            }
+            else
+            {
+                <div class="switch m-r-10">
+                    <label for="Status"></label>
+                    <input type="checkbox" asp-for="Status" />
+                </div>
+            }
+            <label>Còn hiệu lực</label>
+        </div>
+        <div class="form-group">
+            <a asp-action="Index" class="btn btn-outline-secondary" style="margin-right:20px;">Back to List</a>
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>

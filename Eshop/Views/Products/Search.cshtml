@@ -1,0 +1,238 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Web.Common;
+@model IPagedList<Eshop.Models.Product>
+
+@{
+    int _current = ViewBag.CurrentPage;
+    int _next = _current + 1;
+    ViewData["Title"] = "List Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var lstType = ViewBag.ListType;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">Shop Grid</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <ul class="breadcrumb-nav">
+                    <li><a asp-action="Index" asp-controller="Home"><i class="lni lni-home"></i> Home</a></li>
+                    <li><a href="javascript:void(0)">Shop</a></li>
+                    <li>Shop Grid</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="product-grids section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-12">
+                <div class="product-sidebar">
+                    <div class="single-widget search">
+                        <h3>Search Product</h3>
+                        <form asp-controller="Products" asp-action="Search">
+                            <input type="text" placeholder="Search Here..." name="searchStr" value="@ViewData["CurrentFilter"]" required>
+                            <button type="submit" value="Search"><i class="lni lni-search-alt"></i></button>
+                        </form>
+                    </div>
+
+                    @*ds loai san pham*@
+                    <div class="single-widget">
+                        <h3><a asp-action="Index">All Categories</a></h3>
+                        <ul class="list">
+                            @if (Model != null && Model.Count() > 0)
+                            {
+                                foreach (var item in lstType)
+                                {
+                                    <li>
+                                        <a asp-action="ProductType" asp-route-id="@item.Id">@item.Name </a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+
+                    @*search theo gia *@
+                    <div class="single-widget condition" id="sort">
+                        <h3>Filter by Price</h3>
+                        <div class="form-check">
+                            <input value="1" class="form-check-input" type="checkbox" id="flexCheckDefault1">
+                            <label class="form-check-label" for="flexCheckDefault1">
+                                $50 - $100L (208)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input value="2" class="form-check-input" type="checkbox" id="flexCheckDefault2">
+                            <label class="form-check-label" for="flexCheckDefault2">
+                                $100L - $500 (311)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input value="3" class="form-check-input" type="checkbox" id="flexCheckDefault3">
+                            <label class="form-check-label" for="flexCheckDefault3">
+                                $500 - $1,000 (485)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input value="4" class="form-check-input" type="checkbox" id="flexCheckDefault4">
+                            <label class="form-check-label" for="flexCheckDefault4">
+                                $1,000 - $5,000 (213)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9 col-12">
+                <div class="product-grids-head">
+                    <div class="product-grid-topbar">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7 col-md-8 col-12"></div>
+
+                            <div class="col-lg-5 col-md-4 col-12">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link active" id="nav-grid-tab" data-bs-toggle="tab"
+                                                data-bs-target="#nav-grid" type="button" role="tab"
+                                                aria-controls="nav-grid" aria-selected="true">
+                                            <i class="lni lni-grid-alt"></i>
+                                        </button>
+                                        <button class="nav-link" id="nav-list-tab" data-bs-toggle="tab"
+                                                data-bs-target="#nav-list" type="button" role="tab"
+                                                aria-controls="nav-list" aria-selected="false">
+                                            <i class="lni lni-list"></i>
+                                        </button>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-grid" role="tabpanel" aria-labelledby="nav-grid-tab">
+
+                            <div class="row" id="my-products">
+                                @if (Model != null && Model.Count() > 0)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <div class="col-lg-4 col-md-6 col-12" data-productprice="@item.Price">
+
+                                            <div class="single-product">
+                                                <div class="product-image">
+                                                    <a asp-action="Details" asp-route-id="@item.Id">
+                                                        <img src="~/images/products/@item.Image" alt="@item.Name" style="height: 350px; width: 300px">
+                                                    </a>
+                                                    <div class="button">
+                                                        <input id="txtsoluong" name="txtsoluong" type="hidden" value="1">
+                                                        <a class="btn add-to-cart-btn" data-mahh="@item.Id" data-soluong="1"><i class="lni lni-cart"></i> Add to Cart</a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-info">
+                                                    <span class="category">@item.ProductType.Name</span>
+                                                    <h4 class="title">
+                                                        <a asp-action="Details" asp-route-id="@item.Id">@item.Name</a>
+                                                    </h4>
+                                                    <ul class="review">
+                                                        <li><i class="lni lni-star-filled"></i></li>
+                                                        <li><i class="lni lni-star-filled"></i></li>
+                                                        <li><i class="lni lni-star-filled"></i></li>
+                                                        <li><i class="lni lni-star-filled"></i></li>
+                                                        <li><i class="lni lni-star"></i></li>
+                                                        <li><span>4.0 Review(s)</span></li>
+                                                    </ul>
+                                                    <div class="price">
+                                                        <span>@item.Price.ToString("#,##0") VNĐ</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                            <div class="row">
+                                <div class="col-2">
+                                    <div class="pagination left">
+                                        @Html.PagedListPager(Model, page => Url.Action("index", new {page = page}), new PagedListRenderOptions()
+                                        {
+                                        ActiveLiElementClass = "active",
+                                        PageClasses = new[]{ "page-link"},
+                                        LiElementClasses=new[] { "page-item" },
+                                        UlElementClasses = new[] { "pagination","justify-content-center", "mt-3" },
+                                        LinkToNextPageFormat = "Next",
+                                        LinkToPreviousPageFormat = "Previous",
+                                        MaximumPageNumbersToDisplay = 3,
+                                        DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                                        DisplayLinkToNextPage = PagedListDisplayMode.Always
+                                        })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $(".add-to-cart-btn").click(function () {
+                    var productID = $(this).attr("data-mahh");
+                    var qty1 = $(this).attr("data-soluong");
+                    $.ajax({
+                        url: '/api/cart/add',
+                        type: "POST",
+                        dataType: "JSON",
+                        data: {
+                            productId: productID,
+                            qty: qty1
+                        },
+                        success: function (response) {
+                            loadHeaderCart();
+                            location.reload();
+                        },
+                        error: function (error) {
+                            alert("Lỗi khi post data: " + error.responseText);
+                        }
+                    });
+                });
+            });
+
+            $(".delete").click(function () {
+                var productID = $(this).attr("data-mahh");
+                $.ajax({
+                    url: "api/cart/remove",
+                    type: "POST",
+                    dataType: "JSON",
+                    data: {
+                        productId: productID,
+                    },
+                    success: function (result) {
+                        location.reload();
+                    },
+                    error: function (rs) {
+                        alert("Lỗi khi Xóa !!!");
+                    }
+                });
+            });
+
+            function loadHeaderCart() {
+                $("#miniCart").load("/AjaxContent/HeaderCart")
+                $("#miniCart").load("/AjaxContent/NumberCart")
+            }
+        });
+    </script>
+}

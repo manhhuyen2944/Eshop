@@ -1,0 +1,221 @@
+﻿@model Eshop.Models.Account
+
+@{
+    ViewData["Title"] = Model.Username + " Profile Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Invoice> _lstDonHang = ViewBag.ListDonHang;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">My Account</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <ul class="breadcrumb-nav">
+                    <li><a asp-controller="Home" asp-action="Index"><i class="lni lni-home"></i> Home</a></li>
+                    <li>My Account</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section id="contact-us" class="contact-us section">
+    <div class="container">
+        <div class="contact-head">
+            <div class="contact-info">
+                <div class="row">
+
+                    <div class="contact-form-head">
+                        <div class="form-main">
+                            <form class="form" method="post">
+                                <div class="row">
+                                    <div class="col-lg-4">
+
+                                        <div class="profile-img">
+                                            <img src="~/images/User/@Model.Avatar" alt="@Model.Avatar" style="height: 500px" />
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                            <label asp-for="Username" class="control-label"></label>
+                                            <input asp-for="Username" class="form-group" disabled="disabled">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="FullName" class="control-label"></label>
+                                            <input asp-for="FullName" class="form-group" disabled="disabled">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="control-label"></label>
+                                            <input asp-for="Email" class="form-group" disabled="disabled">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Phone" class="control-label"></label>
+                                            <input asp-for="Phone" class="form-group" disabled="disabled">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Address" class="control-label"></label>
+                                            <input asp-for="Address" class="form-group" disabled="disabled">
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label asp-for="Status" class="control-label"></label>
+                                            <input type="checkbox" class="form-group" checked disabled />
+                                        </div>
+                                        <div class="form-group">
+                                            <a asp-controller="Accounts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit Account</a>
+                                        </div>
+                                        <div class="form-group">
+                                            <a asp-controller="Accounts" asp-action="ChangePassword" class="btn btn-primary">Change Password</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                    @if (_lstDonHang != null && _lstDonHang.Count() > 0)
+                    {
+                        <div class="shopping-cart section">
+                            <div class="container">
+                                <div class="cart-list-head">
+
+                                    <div class="cart-list-title">
+                                        <div class="row">
+                                            <div class="col-lg-2 col-md-2 col-12">
+                                                <p>Mã đơn hàng</p>
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-12">
+                                                <p>Ngày mua</p>
+                                            </div>
+                                            <div class="col-lg-2 col-md-1 col-12">
+                                                <p>Trạng thái</p>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-12">
+                                                <p>Tổng tiền</p>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-12"></div>
+                                        </div>
+                                    </div>
+
+                                    @foreach (var item in _lstDonHang)
+                                    {
+                                        string url = $"/chi-tiet-don-hang-{item.Id}.html";
+                                        <div class="cart-single-list">
+                                            <div class="row align-items-center">
+                                                <div class="col-lg-2 col-md-2 col-12">
+                                                    <p>@item.Id</p>
+                                                </div>
+                                                <div class="col-lg-3 col-md-3 col-12">
+                                                    <p>@item.IssuedDate</p>
+                                                </div>
+                                                <div class="col-lg-2 col-md-1 col-12">
+                                                    @if (item.Status)
+                                                    {
+                                                        <p>Đã duyệt</p>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>Chưa duyệt</p>
+                                                    }
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-12">
+                                                    <p>@item.Total.ToString("#,##0") VNĐ</p>
+                                                </div>
+                                                <div class="col-lg-2 col-md-2 col-12">
+                                                    <a class="btn btn-info btn-primary-hover" href="@url" id="xemdonhang" data-madonhang="@item.Id">Chi tiết</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="shopping-cart section">
+                            <div class="container">
+                                <div class="cart-list-head">
+
+                                    <div class="cart-list-title">
+                                        <div class="row">
+                                            <div class="col-lg-1 col-md-1 col-12">
+                                            </div>
+                                            <div class="col-lg-4 col-md-3 col-12">
+                                                <p>Product Name</p>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-12">
+                                                <p>Price</p>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-12">
+                                                <p>Quantity(MAX=20)</p>
+                                            </div>
+                                            <div class="col-lg-2 col-md-2 col-12">
+                                                <p>Subtotal</p>
+                                            </div>
+                                            <div class="col-lg-1 col-md-2 col-12">
+                                                <p>Remove</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="cart-single-list">
+                                        <div class="row align-items-center">
+                                            <p>Danh sách đơn hàng trống!!!</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    input:disabled {
+        background: #AEAEAE;
+    }
+</style>
+
+
+@section scripts{
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(function () {
+                $("#huydonhang").click(function () {
+                    var madonhang = $(this).attr("data-madonhang")
+                    $.ajax({
+                        url: 'api/donhang/cancel',
+                        dataType: "JSON",
+                        type: "POST",
+                        data: { id: madonhang },
+                        async: true,
+                        success: function (results) {
+                            location.reload();
+                        },
+                        error: function (xhr) {
+                            alert("Lỗi");
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

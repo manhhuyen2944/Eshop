@@ -1,0 +1,129 @@
+﻿@model Eshop.Models.Invoice
+@{
+    ViewData["Title"] = "Thanh Toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Eshop.Models.Cart> carts = ViewBag.GioHang;
+}
+
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-6 col-12">
+                <div class="breadcrumbs-content">
+                    <h1 class="page-title">checkout</h1>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-12">
+                <ul class="breadcrumb-nav">
+                    <li><a asp-action="Index" asp-controller="Home"><i class="lni lni-home"></i> Home</a></li>
+                    <li><a asp-action="Index" asp-controller="Products">Shop</a></li>
+                    <li>checkout</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<section class="checkout-wrapper section">
+    <div class="container">
+        <div class="row justify-content-center">
+
+            <form asp-controller="Checkouts" asp-action="Index" method="post">
+                <input type="hidden" asp-for="AccountId" />
+
+                <div class="col-lg-12">
+                    <div class="checkout-steps-form-style-1">
+                        <ul id="accordionExample">
+                            <li>
+                                <h6 class="title" data-bs-toggle="collapse" data-bs-target="#collapseFour">
+                                    Shipping Address
+                                </h6>
+                                <section class="checkout-steps-form-content collapse show" id="collapseFour" aria-labelledby="headingFour"
+                                         data-bs-parent="#accordionExample">
+
+                                    <div class="row">
+
+                                        <div class="col-md-6">
+                                            <div class="single-form form-default">
+                                                <label asp-for="ShippingPhone"></label>
+                                                <div class="form-input form">
+                                                    <input asp-for="ShippingPhone" type="text" placeholder="Phone Number">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label asp-for="ShippingAddress"></label>
+                                                <div class="form-input form">
+                                                    <input asp-for="ShippingAddress" type="text" placeholder="Mailing Address">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="checkout-payment-option">
+                                                <h6 class="heading-6 font-weight-400 payment-title">
+                                                    Select Delivery
+                                                    Option
+                                                </h6>
+                                                <div class="payment-option-wrapper">
+                                                    <div class="single-payment-option">
+                                                        <input type="radio" name="shipping" checked id="shipping-1" required="required">
+                                                        <label for="shipping-1">
+                                                            <img src="~/images/shipping/shipping-1.png" alt="Sipping">
+                                                            <p>Standerd Shipping</p>
+                                                            <span class="price">Free</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="checkout-sidebar">
+
+                        @if (carts != null && carts.Count() > 0)
+                        {
+                            <div class="checkout-sidebar-price-table mt-30">
+                                <h5 class="title">Pricing Table</h5>
+                                <div class="sub-total-price">
+                                    @if (carts != null && carts.Count() > 0)
+                                    {
+                                        foreach (var item in carts)
+                                        {
+                                            <div class="total-price">
+                                                <p class="value"><span>x</span>@item.Quantity @item.Product.Name</p>
+                                                <p class="price">@((item.Product.Price * item.Quantity).ToString("#,##0")) VNĐ</p>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+
+                                <div class="total-payable">
+                                    <div class="payable-price">
+                                        <p class="value">Subotal Price:</p>
+                                        <p class="price">@carts.Sum(x => x.Product.Price * x.Quantity).ToString("#,##0") VNĐ</p>
+                                    </div>
+                                </div>
+
+                                <div class="button float-end">
+                                    <button type="submit" class="btn btn-alt">Checkout</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,172 @@
+﻿@model IEnumerable<Eshop.Models.Cart>
+@{
+    var lstypes = ViewBag.lsTypes as List<ProductType>;
+}
+
+<header class="header navbar-area">
+
+    <div class="topbar">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="top-left">
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+
+                    <div class="top-middle">
+                        <ul class="useful-links">
+                            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                            <li><a asp-action="Index" asp-controller="Products">Shop</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-12">
+                    <div class="top-end">
+                        <ul class="user-login">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <li>
+                                    <a asp-controller="Accounts" asp-action="MyAccount">
+                                        <i class="lni lni-user" style="margin-right: 10px"></i>
+                                        Hello @User.Identity.Name
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Accounts" asp-action="Logout">Logout</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li><p>Hello</p></li>
+                                <li><a asp-controller="Accounts" asp-action="Login">Sign In</a></li>
+                                <li><a asp-controller="Accounts" asp-action="Register">Register</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="header-middle">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-lg-3 col-md-3 col-7">
+
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <img src="~/images/logo/logo.svg" alt="Logo">
+                    </a>
+
+                </div>
+
+                <div class="col-lg-5 col-md-7 d-xs-none">
+                    <div class="main-menu-search">
+                        @using (Html.BeginForm("Search", "Products", FormMethod.Post))
+                        {
+                            <form asp-action="Search" asp-controller="Products">
+                                <div class="navbar-search search-style-5">
+                                    <div class="search-input">
+                                        <input type="text" placeholder="Search" name="searchStr" value="@ViewData["CurrentFilter"]" required>
+                                    </div>
+                                    <div class="search-btn">
+                                        <button type="submit" value="Search"><i class="lni lni-search-alt"></i></button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        }
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-2 col-5">
+                    <div class="middle-right-area">
+                        <div class="nav-hotline">
+                            <i class="lni lni-phone"></i>
+                            <h3>
+                                Hotline:
+                                <span>(+100) 123 456 7890</span>
+                            </h3>
+                        </div>
+                        <div class="navbar-cart">
+                            <div class="cart-items">
+                                @await Component.InvokeAsync("NumberCart")
+                                @await Component.InvokeAsync("HeaderCart")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 col-md-6 col-12">
+                <div class="nav-inner">
+
+                    <div class="mega-category-menu">
+                        <span class="cat-button"><i class="lni lni-menu"></i>All Categories</span>
+                        <ul class="sub-category">
+                            @foreach (var item in @lstypes)
+                            {
+                                <li>
+                                    <a asp-action="ProductType" asp-controller="Products" asp-route-id="@item.Id">@item.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+
+
+                    <nav class="navbar navbar-expand-lg">
+                        <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                            <span class="toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+                            <ul id="nav" class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a asp-controller="Home" asp-action="Index" class="active" aria-label="Toggle navigation">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-action="Index" asp-controller="Products" aria-label="Toggle navigation">Shop</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-12">
+
+                <div class="nav-social">
+                    <h5 class="title">Follow Us:</h5>
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0)"><i class="lni lni-facebook-filled"></i></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</header>

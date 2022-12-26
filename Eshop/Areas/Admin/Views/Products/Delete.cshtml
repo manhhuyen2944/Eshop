@@ -1,0 +1,89 @@
+﻿@model Eshop.Models.Product
+
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-8" style="margin-top:10%;margin-left:10%;">
+    <div>
+        <h4>Sản phẩm</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Price)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Image)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Image)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Stock)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Stock)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.ProductType.Name)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.ProductType.Name)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+        </dl>
+        <hr />
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <a asp-action="Index" class="btn btn-outline-secondary" style="margin-right:20px;">Back to List</a>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Delete</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Xác nhận xóa</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <i class="anticon anticon-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn xóa ???
+            </div>
+            <div class="modal-footer">
+                <form asp-action="Delete">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

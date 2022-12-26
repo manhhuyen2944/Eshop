@@ -1,0 +1,84 @@
+﻿@model Eshop.Models.Invoice
+
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Hàng #" + Model.Id;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    List<InvoiceDetail> invoiceDetails = ViewBag.ChiTiet;
+}
+
+<div class="card">
+    <div class="col-sm-12">
+        <address class="p-l-10 m-t-10">
+            <div class="row">
+                <div class="col-md-2">
+                    <span><a style="font-weight: 800; margin-right:10px;">Họ tên khách hàng:</a></span><br>
+                    <span><a style="font-weight: 800; margin-right: 10px;">Email:</a></span><br>
+                    <span><a style="font-weight: 800; margin-right: 10px;">Địa chỉ:</a></span><br>
+                    <span><a style="font-weight: 800; margin-right: 10px;">SĐT:</a></span><br>
+                </div>
+                <div class="col-md-5">
+                    <span>@Model.Account.FullName</span><br>
+                    <span>@Model.Account.Email</span><br>
+                    <span>@Model.ShippingAddress</span><br>
+                    <span>@Model.ShippingPhone</span><br>
+                </div>
+            </div>
+        </address>
+    </div>
+
+    <hr />
+    <div class="col-sm-3">
+        <div class="m-t-80">
+            <div class="text-dark text-uppercase d-inline-block">
+                <span class="font-weight-semibold text-dark">Invoice No :</span>
+            </div>
+            <div class="float-right">#@Model.Id</div>
+        </div>
+        <div class="text-dark text-uppercase d-inline-block">
+            <span class="font-weight-semibold text-dark">Date :</span>
+        </div>
+        <div class="float-right">@Model.IssuedDate</div>
+    </div>
+    <hr />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Tên sản phẩm</th>
+                <th>Số lượng</th>
+                <th>GIá</th>
+                <th>Tổng tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (invoiceDetails != null && invoiceDetails.Count() > 0)
+            {
+                int i = 1;
+                foreach (var item in invoiceDetails)
+                {
+                    <tr>
+                        <td>@i</td>
+                        <td>@item.Product.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.UnitPrice.ToString("#,##0") VNĐ</td>
+                        <td>@((item.Quantity * item.UnitPrice).ToString("#,##0"))</td>
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+
+    </table>
+
+
+    <div class="col-sm-12">
+        <h3><span class="font-weight-semibold text-dark">Total :</span> @Model.Total.ToString("#,##0") VNĐ</h3>
+    </div>
+
+    <hr />
+    <!--@@-->
+    <div class="row-cols-4">
+        <a asp-action="DSHDChuaDuyet" type="button" class="btn btn-outline-danger">Back to List</a>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+﻿@model Eshop.Models.Account
+
+@{
+    ViewData["Title"] = "Edit Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
+        <div class="register-form">
+            <div class="title">
+                <h3>Edit Account</h3>
+            </div>
+
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Username" />
+                <input type="hidden" asp-for="RandomKey" value="@Model.RandomKey" />
+                <input type="hidden" asp-for="Password" />
+                <input type="hidden" asp-for="Status" />
+                <input type="hidden" asp-for="Avatar" />
+
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" disabled/>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" required/>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone" class="control-label"></label>
+                    <input asp-for="Phone" class="form-control" required/>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" required />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FullName" class="control-label"></label>
+                    <input asp-for="FullName" class="form-control" required />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <div class="col-6 col-md-4">
+                            <img src="~/images/User/@Model.Avatar" style="width: 300px; height: 300px; border-radius: 20px;" alt="" id="output">
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <label asp-for="Avatar" class="control-label"></label>
+                            <input type="file" name="fAvatar" asp-for="Avatar" class="form-control-file" onchange="loadFile(event)" />
+                            <span asp-validation-for="Avatar" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </div>
+            </form>
+            <hr />
+            <a asp-action="MyAccount" asp-controller="Accounts" class="btn btn-block btn-outline-danger"><i class="fas fa-arrow-left" style="margin-right:10px;"></i>Quay lại</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById("output");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+    }

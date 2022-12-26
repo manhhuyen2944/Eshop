@@ -1,0 +1,76 @@
+﻿@model Eshop.Models.Account
+
+@{
+    ViewData["Title"] = "Chi tiết tài khoản #" + Model.Id;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <img src="~/images/user/@Model.Avatar" alt="@Model.FullName" style="width: 300px; height: 300px">
+        </li>
+        <li class="list-group-item">
+            <div class="row justify-content-start">
+                <div class="col-4">Họ tên</div>
+                <div class="col-4">@Model.FullName</div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row justify-content-start">
+                <div class="col-4">Email</div>
+                <div class="col-4">@Model.Email</div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row justify-content-start">
+                <div class="col-4">Phone</div>
+                <div class="col-4">@Model.Phone</div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row justify-content-start">
+                <div class="col-4">Address</div>
+                <div class="col-4">@Model.Address</div>
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row justify-content-start">
+                <div class="col-4">Is Admin?</div>
+                @if (Model.IsAdmin)
+                {
+                    <div class="col-4">Admin</div>
+                }
+                else
+                {
+                    <div class="col-4">Khách hàng</div>
+                }
+            </div>
+        </li>
+        <li class="list-group-item">
+            <div class="row justify-content-start">
+                <div class="col-4">
+                    Status
+                </div>
+                @if (Model.Status)
+                {
+                    <div class="col-4">Hoạt động</div>
+                }
+                else
+                {
+                    <div class="col-4">Khoá</div>
+                }
+            </div>
+        </li>
+    </ul>
+    <hr />
+    <div class="row-cols-4">
+        <a asp-action="Index" type="button" class="btn btn-outline-danger">Back to List</a>
+        <a asp-controller="Accounts" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="anticon anticon-edit"></i>
+            <span>Sửa</span>
+        </a>
+    </div>
+</div>
+
+

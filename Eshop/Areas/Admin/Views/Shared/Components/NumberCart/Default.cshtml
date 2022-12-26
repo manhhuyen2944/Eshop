@@ -1,0 +1,14 @@
+﻿@model List<Eshop.Models.Cart>
+
+
+<a class="main-btn" data-toggle="dropdown" aria-expanded="true">
+    <i class="lni lni-cart"></i>
+    @if (Model != null && Model.Count() > 0)
+    {
+        <span class="total-items qty">@Model.Count()</span>
+    }
+    else
+    {
+        <span class="total-items qty">0</span>
+    }
+</a>

@@ -1,0 +1,61 @@
+﻿@model Eshop.Models.Product
+
+@{
+    ViewData["Title"] = "Chi tiết sản phẩm #" + Model.Id;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="card">
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    <img src="~/images/products/@Model.Image" alt="@Model.Name" style="width: 300px; height: 300px">
+                </td>
+            </tr>
+            <tr>
+                <td scope="row">Tên sản phẩm</td>
+                <td scope="row">@Model.Name</td>
+            </tr>
+            <tr>
+                <td scope="row">Giá</td>
+                <td scope="row">@Model.Price.ToString("#,##0") VNĐ</td>
+            </tr>
+            <tr>
+                <td scope="row">Loại sản phẩm</td>
+                <td scope="row">@Model.ProductType.Name</td>
+            </tr>
+            <tr>
+                <td scope="row">Trạng thái</td>
+                @if (Model.Status)
+                {
+                    <td>Còn hàng</td>
+                }
+                else
+                {
+                    <td>Hết hàng</td>
+                }
+            </tr>
+
+        </tbody>
+    </table>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Mô tả sản phẩm</h4>
+        </div>
+        <div class="card-body">
+            <p>@Html.Raw(Model.Description)</p>
+        </div>
+    </div>
+
+    <hr />
+    <div class="cols-4">
+        <a asp-action="Index" type="button" class="btn btn-outline-danger">Back to List</a>
+        <a asp-controller="SanPham" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+            <i class="anticon anticon-edit"></i>
+            <span>Sửa</span>
+        </a>
+    </div>
+</div>
+

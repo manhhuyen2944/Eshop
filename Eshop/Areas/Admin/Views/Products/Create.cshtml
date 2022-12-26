@@ -1,0 +1,69 @@
+﻿@model Eshop.Models.Product
+
+@{
+    ViewData["Title"] = "Thêm sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row-cols-lg-2" style="margin: 20px;">
+
+    <form asp-controller="Products" asp-action="Create" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-row">
+            <div class="form-group">
+                <img src="~/_AdminAssets/img/empty.jpg" style="width: 200px; height: 200px; border-radius: 20px;" alt="" id="output">
+                <label asp-for="Image" class="control-label"></label>
+                <input type="file" name="fImage" asp-for="Image" class="form-control-file" onchange="loadFile(event)" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="ProductTypeId" class="control-label"></label>
+                <select asp-for="ProductTypeId" class="form-control" asp-items="@ViewBag.ProductType"></select>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" min="1" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Stock" class="control-label"></label>
+                <input asp-for="Stock" class="form-control" />
+                <span asp-validation-for="Stock" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Actived</label>
+                <input type="checkbox" asp-for="Status" checked="" />
+                <label for="IsActived"></label>
+            </div>
+
+            <div class="card col-12">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description"></textarea>
+            </div>
+        </div>
+        <hr />
+        <div class="form-group">
+            <a asp-action="Index" class="btn btn-outline-secondary" style="margin-right:20px;">Back to List</a>
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById("output");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+}

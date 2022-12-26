@@ -1,0 +1,79 @@
+﻿@model Eshop.Models.Product
+@{
+    ViewData["Title"] = "Sửa thông tin SP";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row-cols-lg-2" style="margin: 20px;">
+
+    <form asp-controller="Products" asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="Image" />
+
+        <div class="form-group col-md-6">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="ProductTypeId" class="control-label"></label>
+            <select asp-for="ProductTypeId" class="form-control" asp-items="@ViewBag.ProductType"></select>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="Price" class="control-label"></label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Stock" class="control-label"></label>
+            <input asp-for="Stock" class="form-control" />
+            <span asp-validation-for="Stock" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <img src="~/images/products/@Model.Image" style="width: 200px; height: 200px; border-radius: 20px;" alt="" id="output">
+            <label asp-for="Image" class="control-label"></label>
+            <input type="file" name="fAvatar" asp-for="Image" class="form-control-file" onchange="loadFile(event)" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+        <div class="form-group form-check">
+            @if (Model.Status)
+            {
+                <div class="switch m-r-10">
+                    <input type="checkbox" asp-for="Status" checked="" />
+                    <label for="Status"></label>
+                </div>
+            }
+            else
+            {
+                <div class="switch m-r-10">
+                    <input type="checkbox" asp-for="Status" />
+                    <label for="Status"></label>
+                </div>
+            }
+            <label>Còn hàng</label>
+        </div>
+        <div class="card col-12">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description"></textarea>
+        </div>
+        <hr />
+        <div class="form-group">
+            <a asp-action="Index" class="btn btn-outline-secondary" style="margin-right:20px;">Back to List</a>
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        var loadFile = function (event) {
+            var image = document.getElementById("output");
+            image.src = URL.createObjectURL(event.target.files[0]);
+        };
+    </script>
+}
